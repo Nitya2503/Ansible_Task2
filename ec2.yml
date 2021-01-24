@@ -1,0 +1,26 @@
+- hosts: all
+  vars_files:
+          - Secretfile.yml
+  tasks:
+     - name: "ANSIBLE_EC2"
+       ec2:
+               key_name: "Nitya"
+               instance_type: "t2.micro"
+               image: "ami-0ebc1ac48dfd14136"
+               wait: yes
+               count: 1
+               instance_tags: 
+                       Name: EC2_ANSIBLE
+               vpc_subnet_id: "subnet-e7f7cd8f"
+               assign_public_ip: yes
+               region: "ap-south-1"
+               state: present
+               group_id: "sg-06b6b58cb591f012b"
+               aws_access_key: "{{access_Key}}"
+               aws_secret_key: "{{secret_Key}}"
+       register: NIT
+     - debug:
+             var: NIT.instances[0].private_ip
+       register: IP
+     - debug: 
+          var: IP["NIt.instances[0].private_ip"] 
